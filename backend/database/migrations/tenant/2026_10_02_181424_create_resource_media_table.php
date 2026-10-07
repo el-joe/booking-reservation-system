@@ -1,0 +1,29 @@
+<?php
+
+declare(strict_types=1);
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('resource_media', function (Blueprint $table): void {
+            $table->id();
+            $table->foreignId('resource_id')->constrained()->cascadeOnDelete();
+            $table->string('file_path');
+            $table->enum('file_type', ['image', 'video'])->default('image');
+            $table->integer('sort_order')->default(0);
+            $table->boolean('is_cover')->default(false);
+            $table->string('caption')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('resource_media');
+    }
+};
