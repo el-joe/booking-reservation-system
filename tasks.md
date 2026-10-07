@@ -5,6 +5,24 @@
 
 ---
 
+## Gap-fill completed — 2026-10-07
+
+The following missing pieces were added during a gap-analysis pass:
+
+- `PaypalService` — app/Services/Tenant/Finance/Gateways/PaypalService.php
+- `FawryService` — app/Services/Tenant/Finance/Gateways/FawryService.php
+- `RefundProcessed` event — app/Events/RefundProcessed.php
+- `PostRefundJournal` listener — app/Listeners/PostRefundJournal.php
+- `RefundProcessed → PostRefundJournal` registered in AppServiceProvider
+- `ReviewRequestNotification` — app/Notifications/Tenant/ReviewRequestNotification.php
+- `NotificationSettingsController` — app/Http/Controllers/Tenant/Settings/NotificationSettingsController.php
+- Notification settings Blade view — resources/views/tenant/settings/notifications.blade.php
+- Tenant settings routes for notification settings (GET/POST `settings/notifications`)
+
+---
+
+---
+
 ## Phase 0 — Foundation & Infrastructure
 **Goal:** Working Laravel app with multi-tenancy, auth, and base UI scaffolding.
 

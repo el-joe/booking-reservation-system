@@ -33,6 +33,7 @@ use App\Http\Controllers\Tenant\ReviewController;
 use App\Http\Controllers\Tenant\Settings\BookingSettingsController;
 use App\Http\Controllers\Tenant\Settings\BrandingController;
 use App\Http\Controllers\Tenant\Settings\GeneralSettingsController;
+use App\Http\Controllers\Tenant\Settings\NotificationSettingsController;
 use App\Http\Controllers\Tenant\Settings\PaymentSettingsController;
 use App\Http\Controllers\Tenant\Staff\AttendanceController;
 use App\Http\Controllers\Tenant\Staff\LeaveController;
@@ -269,6 +270,8 @@ Route::middleware([
             Route::post('branding', [BrandingController::class, 'update'])->name('branding.update');
             Route::get('payment', [PaymentSettingsController::class, 'index'])->name('payment');
             Route::post('payment', [PaymentSettingsController::class, 'update'])->name('payment.update');
+            Route::get('notifications', [NotificationSettingsController::class, 'index'])->name('notifications');
+            Route::post('notifications', [NotificationSettingsController::class, 'update'])->name('notifications.update');
         });
 
         // Integrations
@@ -294,6 +297,30 @@ Route::middleware([
             Route::get('reports/balance-sheet', [AccountingReportController::class, 'balanceSheet'])->name('reports.balance-sheet');
             Route::get('reports/profit-loss', [AccountingReportController::class, 'profitLoss'])->name('reports.profit-loss');
             Route::get('reports/cash-flow', [AccountingReportController::class, 'cashFlow'])->name('reports.cash-flow');
+        });
+
+        // Marketing
+        Route::prefix('marketing')->name('tenant.marketing.')->group(function (): void {
+            Route::resource('campaigns', \App\Http\Controllers\Tenant\Marketing\CampaignController::class)->names('campaigns');
+            Route::resource('referrals', \App\Http\Controllers\Tenant\Marketing\ReferralProgramController::class)->names('referrals');
+            Route::resource('affiliates', \App\Http\Controllers\Tenant\Marketing\AffiliateController::class)->names('affiliates');
+        });
+
+        // Channel Management
+        Route::prefix('channels')->name('tenant.channels.')->group(function (): void {
+            Route::resource('ota', \App\Http\Controllers\Tenant\Channel\OtaChannelController::class)->names('ota');
+            Route::resource('reservations', \App\Http\Controllers\Tenant\Channel\ChannelReservationController::class)
+                ->only(['index', 'show'])
+                ->names('reservations');
+        });
+
+        // Business Intelligence
+        Route::prefix('bi')->name('tenant.bi.')->group(function (): void {
+            Route::get('/', [\App\Http\Controllers\Tenant\BI\DashboardController::class, 'index'])->name('index');
+            Route::get('trends', [\App\Http\Controllers\Tenant\BI\DashboardController::class, 'trends'])->name('trends');
+            Route::get('forecast', [\App\Http\Controllers\Tenant\BI\DashboardController::class, 'forecast'])->name('forecast');
+            Route::get('customer-behavior', [\App\Http\Controllers\Tenant\BI\DashboardController::class, 'customerBehavior'])->name('customer-behavior');
+            Route::get('churn', [\App\Http\Controllers\Tenant\BI\DashboardController::class, 'churnAnalysis'])->name('churn');
         });
     });
 });
